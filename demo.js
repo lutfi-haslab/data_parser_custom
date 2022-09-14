@@ -95,29 +95,65 @@ let parserData = [
   },
 ];
 
+let parserTable = [
+  {
+    deviceId: "123",
+    body: `
+            var parsedData = [];
+            var obj = {};
+            var payload = data;
+        
+            obj = {};
+            obj.temp = payload.temp
+            obj.hum = payload.hum
+            obj.time = waktu
+            parsedData.push(obj)
+        
+            return parsedData
+        `,
+  },
+];
+
 let temporaryData = [];
+let tempDataTable = [];
 
 const data = {
   function: { arguments: "data,waktu", body: parserData[0].body },
 };
 var fun = new Function(data.function.arguments, data.function.body);
 
+const data2 = {
+  function: { arguments: "data,waktu", body: parserTable[0].body },
+};
+var fun2 = new Function(data2.function.arguments, data2.function.body);
+
 dataUser.map((item) => {
   console.log(item.data);
   let data = fun(item.data, item.waktu);
-
   data.map((item) => {
     return temporaryData.push(item);
   });
 });
 
-console.log(temporaryData);
-let dataFilter = temporaryData.filter((item) => {
-    return item.key == 'data1'
-})
+let dataFilter2 = dataUser.filter((item) => {
+  return item.deviceId == "123";
+});
 
-console.log(dataFilter)
+dataFilter2.map((item) => {
+  let data2 = fun2(item.data, item.waktu);
+  data2.map((item) => {
+    return tempDataTable.push(item);
+  });
+});
+
+console.log(temporaryData);
+console.log(tempDataTable);
+let dataFilter = temporaryData.filter((item) => {
+  return item.key == "data1";
+});
+
+console.log(dataFilter);
 
 temporaryData.map((item) => {
-  console.log(item.value);
+  console.log(item);
 });
