@@ -112,7 +112,12 @@ dataUser.map((item) => {
 });
 
 console.log(temporaryData);
+let dataFilter = temporaryData.filter((item) => {
+    return item.key == 'data1'
+})
+
+console.log(dataFilter)
 
 temporaryData.map((item) => {
-  console.log(item);
+  console.log(item.value);
 });
